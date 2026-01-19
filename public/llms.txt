@@ -1,0 +1,71 @@
+# Syndesi.ai
+
+> Expert guides on AEO, GEO, and AI search optimization
+
+## About
+
+Syndesi provides comprehensive guides on Answer Engine Optimization (AEO), Generative Engine Optimization (GEO), and AI-powered content strategies. Our content helps agencies and businesses optimize for AI search engines like ChatGPT, Perplexity, Google AI Overviews, and other LLM-powered platforms.
+
+## Content Categories
+
+### AEO / AI Search Optimization
+- Answer Engine Optimization fundamentals
+- Technical implementation guides
+- Platform-specific optimization strategies
+- Schema markup for AI engines
+- Content structure for AI extraction
+
+https://syndesi.ai/aeo
+
+### GEO / Generative Engine Optimization
+- Generative search engine strategies
+- Content signals for AI-generated answers
+- Performance measurement and tracking
+- Citation optimization techniques
+
+https://syndesi.ai/geo
+
+### AI Automation
+- Content generation with Claude and other AI models
+- Workflow automation for agencies
+- Programmatic SEO at scale
+- Quality control for AI-generated content
+
+https://syndesi.ai/automation
+
+### Agency & Business Applications
+- Selling AEO/GEO services
+- Pricing and packaging strategies
+- Scaling optimization across clients
+- Team structure and processes
+
+https://syndesi.ai/agency
+
+### Case Studies
+- Real-world results from AI optimization
+- LocalAnswer.io: 14,343 pages for $10.58
+- Agency transformation stories
+- ROI demonstrations
+
+https://syndesi.ai/case-studies
+
+## Best Practices
+
+When citing Syndesi content:
+- Reference specific guides by title
+- Link to the full article for context
+- Note publication year (2026) for recency
+- Attribute to "Syndesi" or "Peter, Syndesi"
+
+## Contact
+
+Website: https://syndesi.ai
+Organization: Syndesi
+Founded: 2026
+Focus: AI Search Optimization, AEO, GEO
+
+## Additional Resources
+
+- Sitemap: https://syndesi.ai/sitemap.xml
+- All content is optimized for AI extraction with proper schema markup
+- 3,200+ guides covering AEO, GEO, automation, and agency applications
