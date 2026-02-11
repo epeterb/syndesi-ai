@@ -43,6 +43,16 @@ export default function Home() {
           Read the full case study →
         </a>
       </div>
+
+      <div className="bg-gray-50 p-8 rounded-lg mt-8">
+        <h2 className="text-3xl font-bold mb-4">The InStoreIndex Case Study</h2>
+        <p className="text-lg text-gray-700 mb-4">
+          1,450+ pages covering the in-store media industry — background music, digital signage, and retail media networks. Vendor-neutral authority site built for AI search citation.
+        </p>
+        <a href="https://instoreindex.com" className="text-blue-600 font-semibold hover:underline">
+          Visit InStoreIndex.com →
+        </a>
+      </div>
     </main>
   )
 }
