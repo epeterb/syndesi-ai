@@ -14,11 +14,26 @@ const categoryNames: Record<string, string> = {
 }
 
 export default async function CategoryPage({ params }: Props) {
-  const { data: pages } = await supabase
-    .from('content_pages')
-    .select('slug, title, meta_description')
-    .eq('category', params.category)
-    .order('title')
+  // Supabase defaults to 1000 rows, so we paginate to get all pages
+  let allPages: Array<{ slug: string; title: string; meta_description: string }> = []
+  let from = 0
+  const batchSize = 1000
+
+  while (true) {
+    const { data: batch } = await supabase
+      .from('content_pages')
+      .select('slug, title, meta_description')
+      .eq('category', params.category)
+      .order('title')
+      .range(from, from + batchSize - 1)
+
+    if (!batch || batch.length === 0) break
+    allPages = [...allPages, ...batch]
+    if (batch.length < batchSize) break
+    from += batchSize
+  }
+
+  const pages = allPages
 
   const categoryName = categoryNames[params.category] || params.category
 
