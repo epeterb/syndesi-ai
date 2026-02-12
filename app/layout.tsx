@@ -6,7 +6,26 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Syndesi | AEO & AI Search Optimization',
-  description: 'Learn how to optimize content for AI answer engines like ChatGPT, Perplexity, and Google AI Overviews. Expert guides on AEO, GEO, and generative search.',
+  description: 'Learn how to optimize content for AI answer engines like ChatGPT, Perplexity, and Google AI Overviews. 3,200+ expert guides on AEO, GEO, and generative search optimization.',
+  openGraph: {
+    title: 'Syndesi | AEO & AI Search Optimization',
+    description: 'Learn how to optimize content for AI answer engines like ChatGPT, Perplexity, and Google AI Overviews. 3,200+ expert guides on AEO, GEO, and generative search optimization.',
+    url: 'https://syndesi.ai',
+    siteName: 'Syndesi',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Syndesi | AEO & AI Search Optimization',
+    description: 'Learn how to optimize content for AI answer engines. 3,200+ expert guides on AEO, GEO, and AI search.',
+  },
+  alternates: {
+    canonical: 'https://syndesi.ai',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({

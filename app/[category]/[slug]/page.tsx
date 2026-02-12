@@ -105,9 +105,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
+  const fullTitle = `${page.title} | Syndesi`
+  const url = `https://syndesi.ai/${params.category}/${params.slug}`
+
   return {
-    title: `${page.title} | Syndesi`,
+    title: fullTitle,
     description: page.meta_description,
+    openGraph: {
+      title: fullTitle,
+      description: page.meta_description,
+      url,
+      siteName: 'Syndesi',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary',
+      title: fullTitle,
+      description: page.meta_description,
+    },
+    alternates: {
+      canonical: url,
+    },
   }
 }
 
@@ -125,12 +143,76 @@ export default async function ContentPage({ params }: Props) {
   const relatedPages = await getRelatedPages(params.slug, params.category)
   const categoryLabel = getCategoryLabel(params.category)
 
+  // Clean answer text for schema (strip markdown formatting)
+  const cleanAnswer = page.answer
+    .replace(/^#{1,3}\s.*$/gm, '')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^- /gm, '')
+    .replace(/\n{2,}/g, ' ')
+    .trim()
+
+  // FAQPage schema — makes every page citable as a Q&A by AI engines
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: page.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: cleanAnswer.substring(0, 1000),
+        },
+      },
+    ],
+  }
+
+  // BreadcrumbList schema — structured navigation for crawlers
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://syndesi.ai',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: categoryLabel,
+        item: `https://syndesi.ai/${params.category}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: page.title,
+        item: `https://syndesi.ai/${params.category}/${params.slug}`,
+      },
+    ],
+  }
+
   return (
     <>
-      {/* Schema.org structured data */}
+      {/* Schema.org Article structured data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(page.schema_json) }}
+      />
+
+      {/* Schema.org FAQPage structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
+      {/* Schema.org BreadcrumbList structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <article className="max-w-3xl mx-auto px-4 py-16">
