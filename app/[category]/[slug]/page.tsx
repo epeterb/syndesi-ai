@@ -185,6 +185,49 @@ export default async function ContentPage({ params }: Props) {
     ],
   }
 
+  // HowTo schema — dynamically generated when step-by-step content is detected
+  const stepPatterns = [
+    /(?:^|\n)\*?\*?Step\s+(\d+)[:.)\s]\*?\*?\s*(.*)/gi,
+    /(?:^|\n)(\d+)\.\s+(.*)/g,
+  ]
+
+  function extractSteps(text: string): Array<{ position: number; name: string }> {
+    const steps: Array<{ position: number; name: string }> = []
+    for (const pattern of stepPatterns) {
+      pattern.lastIndex = 0
+      let match
+      while ((match = pattern.exec(text)) !== null) {
+        const stepText = match[2]
+          .replace(/\*\*(.*?)\*\*/g, '$1')
+          .replace(/\*(.*?)\*/g, '$1')
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+          .trim()
+        if (stepText.length > 5) {
+          steps.push({ position: steps.length + 1, name: stepText })
+        }
+      }
+      if (steps.length >= 3) break
+    }
+    return steps
+  }
+
+  const detectedSteps = extractSteps(page.answer)
+  const hasSteps = detectedSteps.length >= 3
+
+  const howToSchema = hasSteps
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: page.title,
+        description: page.meta_description,
+        step: detectedSteps.map((s) => ({
+          '@type': 'HowToStep',
+          position: s.position,
+          name: s.name.substring(0, 200),
+        })),
+      }
+    : null
+
   // BreadcrumbList schema — structured navigation for crawlers
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -230,6 +273,14 @@ export default async function ContentPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+
+      {/* Schema.org HowTo structured data — only rendered for step-by-step content */}
+      {howToSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        />
+      )}
 
       <article className="max-w-3xl mx-auto px-4 py-16">
         {/* Breadcrumb Navigation */}
