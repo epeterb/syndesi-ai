@@ -153,6 +153,22 @@ export default async function ContentPage({ params }: Props) {
     .replace(/\n{2,}/g, ' ')
     .trim()
 
+  // Merge author Person schema into the Article schema from Supabase
+  const articleSchema = {
+    ...page.schema_json,
+    author: {
+      '@type': 'Person',
+      name: 'Peter Belanger',
+      url: 'https://syndesi.ai',
+      jobTitle: 'Founder',
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Syndesi',
+        url: 'https://syndesi.ai',
+      },
+    },
+  }
+
   // FAQPage schema — makes every page citable as a Q&A by AI engines
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -200,7 +216,7 @@ export default async function ContentPage({ params }: Props) {
       {/* Schema.org Article structured data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(page.schema_json) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
 
       {/* Schema.org FAQPage structured data */}
@@ -275,9 +291,9 @@ function formatMarkdown(markdown: string): string {
   // Simple markdown to HTML conversion
   // In production, use a proper markdown library like 'marked' or 'remark'
   return markdown
-    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-bold mt-8 mb-4">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold mt-8 mb-4">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold mt-8 mb-4">$1</h1>')
+    .replace(/^### (.*$)/gim, '<h4 class="text-lg font-bold mt-6 mb-3">$1</h4>')
+    .replace(/^## (.*$)/gim, '<h3 class="text-xl font-bold mt-8 mb-4">$1</h3>')
+    .replace(/^# (.*$)/gim, '<h2 class="text-2xl font-bold mt-8 mb-4">$1</h2>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:underline">$1</a>')
@@ -287,6 +303,29 @@ function formatMarkdown(markdown: string): string {
     .replace(/^(.+)$/gim, '<p class="mb-4">$1</p>')
 }
 
-// This could be used to pre-generate pages at build time
-// For now, we'll use dynamic rendering
-export const dynamic = 'force-dynamic'
+export async function generateStaticParams() {
+  const categories = ['aeo', 'geo', 'automation', 'agency', 'case-studies']
+  const params: Array<{ category: string; slug: string }> = []
+
+  for (const category of categories) {
+    let from = 0
+    const batchSize = 1000
+
+    while (true) {
+      const { data: pages } = await supabase
+        .from('content_pages')
+        .select('slug')
+        .eq('category', category)
+        .range(from, from + batchSize - 1)
+
+      if (!pages || pages.length === 0) break
+      for (const page of pages) {
+        params.push({ category, slug: page.slug })
+      }
+      if (pages.length < batchSize) break
+      from += batchSize
+    }
+  }
+
+  return params
+}

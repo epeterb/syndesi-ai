@@ -11,6 +11,13 @@ export default function Home() {
     founder: {
       '@type': 'Person',
       name: 'Peter Belanger',
+      url: 'https://syndesi.ai',
+      jobTitle: 'Founder',
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Syndesi',
+        url: 'https://syndesi.ai',
+      },
     },
     knowsAbout: [
       'Answer Engine Optimization',
@@ -61,13 +68,13 @@ export default function Home() {
         <a href="/aeo" className="p-6 border rounded-lg hover:border-blue-500 hover:shadow-lg transition">
           <h2 className="text-2xl font-bold mb-2">AEO</h2>
           <p className="text-gray-600">Answer Engine Optimization strategies for AI-powered search</p>
-          <p className="text-sm text-blue-600 mt-4">1,200+ guides →</p>
+          <p className="text-sm text-blue-600 mt-4">Browse 1,200+ AEO optimization guides →</p>
         </a>
 
         <a href="/geo" className="p-6 border rounded-lg hover:border-blue-500 hover:shadow-lg transition">
           <h2 className="text-2xl font-bold mb-2">GEO</h2>
           <p className="text-gray-600">Generative Engine Optimization for AI answer generation</p>
-          <p className="text-sm text-blue-600 mt-4">800+ guides →</p>
+          <p className="text-sm text-blue-600 mt-4">Browse 800+ GEO optimization guides →</p>
         </a>
 
 
@@ -75,7 +82,7 @@ export default function Home() {
         <a href="/case-studies" className="p-6 border rounded-lg hover:border-blue-500 hover:shadow-lg transition">
           <h2 className="text-2xl font-bold mb-2">Case Studies</h2>
           <p className="text-gray-600">Real results from AI-optimized content systems</p>
-          <p className="text-sm text-blue-600 mt-4">View proof →</p>
+          <p className="text-sm text-blue-600 mt-4">View AI search optimization case studies →</p>
         </a>
       </div>
 
@@ -100,7 +107,7 @@ export default function Home() {
             Visit InStoreIndex.com →
           </a>
           <a href="/case-studies" className="text-gray-600 font-semibold hover:underline">
-            View all case studies →
+            View all AI optimization case studies →
           </a>
         </div>
       </div>

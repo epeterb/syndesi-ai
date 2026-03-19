@@ -45,7 +45,7 @@ export default function RootLayout({
             rel="noopener noreferrer"
             className="ml-2 underline hover:text-blue-100 font-medium"
           >
-            Learn more →
+            Learn about AI search visibility services →
           </a>
         </div>
 
